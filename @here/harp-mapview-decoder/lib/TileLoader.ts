@@ -95,7 +95,7 @@ export class TileLoader extends BaseTileLoader {
                     throw err;
                 }
                 this.onLoaded(payload, onDone, onError);
-            })
+            }, onError)
             .catch(error => {
                 // Handle abort messages from fetch and also our own.
                 if (error.name === "AbortError" || error.message === "AbortError: Aborted") {
