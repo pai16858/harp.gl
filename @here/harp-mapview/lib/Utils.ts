@@ -1049,13 +1049,9 @@ export namespace MapViewUtils {
         deltaPitchDeg: number = 0,
         maxTiltAngleRad = Math.PI / 4
     ) {
-        // 1. Apply yaw: rotate around the vertical axis.
-        mapView.camera.rotateOnWorldAxis(
-            mapView.projection.type === ProjectionType.Spherical
-                ? cache.vector3[0].copy(mapView.camera.position).normalize()
-                : cache.vector3[0].set(0, 0, 1),
-            THREE.MathUtils.degToRad(-deltaYawDeg)
-        );
+        // 1. Apply yaw: rotate around the surface normal.
+        const normal = mapView.projection.surfaceNormal(mapView.camera.position, cache.vector3[0]);
+        mapView.camera.rotateOnWorldAxis(normal, THREE.MathUtils.degToRad(-deltaYawDeg));
         mapView.camera.updateMatrixWorld();
 
         // 2. Apply pitch: rotate around the camera's local X axis.
