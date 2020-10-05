@@ -2428,6 +2428,7 @@ export class MapView extends EventDispatcher {
         this.geoCenter = geoPos;
         let limitedPitch = Math.min(MapViewUtils.MAX_TILT_DEG, pitchDeg);
         if (this.projection.type === ProjectionType.Spherical) {
+            // Fix this here to use the MapViewUtils function.
             const maxPitchRadWithCurvature = Math.asin(
                 EarthConstants.EQUATORIAL_RADIUS /
                     (MapViewUtils.calculateDistanceToGroundFromZoomLevel(this, zoomLevel) +

@@ -1073,13 +1073,25 @@ export namespace MapViewUtils {
         // maximum tilt, as the curvature of the surface adds up to it.
         if (mapView.projection.type === ProjectionType.Spherical) {
             // Deduce max pitch from max tilt. To this end the sine law of triangles is used below.
-            const maxPitch = Math.asin(
-                (EarthConstants.EQUATORIAL_RADIUS * Math.sin(Math.PI - maxTiltAngleRad)) /
-                    mapView.camera.position.length()
+            const maxPitch = limitPitchToSphericalHorizon(
+                maxTiltAngleRad,
+                mapView.camera.position.length()
             );
             newPitch = Math.min(newPitch, maxPitch);
         }
         mapView.camera.rotateX(newPitch - pitch);
+    }
+
+    /**
+     * Computes the maximum tilt possible given the camera distance from the center of the sphere.
+     * @param maxTiltAngleRad Maximum allowed angle.
+     * @param cameraDistance Length of the position of the camera (assuming the sphere is at 0,0,0)
+     */
+    export function limitPitchToSphericalHorizon(maxTiltAngleRad: number, cameraDistance: number) {
+        return Math.asin(
+            (EarthConstants.EQUATORIAL_RADIUS * Math.sin(Math.PI - maxTiltAngleRad)) /
+                cameraDistance
+        );
     }
 
     /**
