@@ -86,8 +86,10 @@ export class TransferManager implements ITransferManager {
     ): Promise<Response> {
         try {
             const response = await fetchFunction(url, init);
-            if (response.status !== 503 || retryCount > maxRetries) {
+            if (response.ok) {
                 return response;
+            } else if (retryCount > maxRetries) {
+                throw new Error("Download failed with status code: " + response.status);
             }
         } catch (err) {
             if (
