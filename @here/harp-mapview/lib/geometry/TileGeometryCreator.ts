@@ -421,6 +421,7 @@ export class TileGeometryCreator {
                 : [geometryKind];
 
         MapObjectAdapter.create(object, {
+            dataSource: tile.dataSource,
             kind,
             ...mapAdapterParams
         });
