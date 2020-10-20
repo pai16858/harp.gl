@@ -20,6 +20,7 @@ export interface MapObjectAdapterParams {
     technique?: Technique;
     kind?: GeometryKind[];
     pickable?: boolean;
+    level?: number;
 
     // TODO: Move here in following refactor.
     //featureData?: TileFeatureData;
@@ -74,6 +75,11 @@ export class MapObjectAdapter {
 
     readonly dataSource?: DataSource;
 
+    /**
+     * The level of the geometry this object came from, used to correctly order geometry.
+     */
+    readonly level?: number;
+
     private readonly m_pickable: boolean;
     private m_lastUpdateFrameNumber = -1;
     private m_notCompletlyTransparent = true;
@@ -87,6 +93,7 @@ export class MapObjectAdapter {
         this.m_notCompletlyTransparent = this.getObjectMaterials().some(
             material => material.opacity > 0
         );
+        this.level = params.level;
     }
 
     /**

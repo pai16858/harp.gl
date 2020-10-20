@@ -333,7 +333,7 @@ export class TileGeometryCreator {
             // concretely, we assume all objects are rendered with a renderOrder between 0 and
             // FALLBACK_RENDER_ORDER_OFFSET / 2, i.e. 10000. The ground plane is put at -10000, and
             // the fallback tiles have their renderOrder set between -20000 and -10000
-            TileGeometryCreator.instance.addGroundPlane(tile, -FALLBACK_RENDER_ORDER_OFFSET / 2);
+            TileGeometryCreator.instance.addGroundPlane(tile, 0);
         }
     }
 
@@ -423,7 +423,8 @@ export class TileGeometryCreator {
         MapObjectAdapter.create(object, {
             dataSource: tile.dataSource,
             kind,
-            ...mapAdapterParams
+            ...mapAdapterParams,
+            level: tile.tileKey.level
         });
 
         // TODO legacy fields, encoded directly in `userData to be removed
